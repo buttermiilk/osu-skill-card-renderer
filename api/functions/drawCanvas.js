@@ -1,11 +1,12 @@
-const { createCanvas, loadImage, registerFont } = require('canvas');
+const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
 const skillCalc = require('../osu/Skill.js');
 const bestData = require('../osu/GetTop.js');
 const { Mods } = require('../osu/Base.js');
 const fetchData = require('./fetchData');
 const generatePlayerType = require('./playerType');
-registerFont("./src/font/IBMPlexSans-Regular.ttf", { family: "IBM Plex Sans", weight: "regular" });
-registerFont("./src/font/IBMPlexSans-Bold.ttf", { family: "IBM Plex Sans", weight: "bold" });
+
+const { join } = require('path');
+GlobalFonts.loadFontsFromDir(join(__dirname, "..", "font"));
 
 const drawCanvas = async (id, mode, client_id, client_secret, description, color, bgColor, imageUrl) => {
   const canvas = createCanvas(600, 1000);
