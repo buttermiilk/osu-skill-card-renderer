@@ -3,7 +3,7 @@
 <p align="center">
   <a href="https://forthebadge.com/">
     <img src="https://forthebadge.com/images/badges/0-percent-optimized.png" height="36"/>
-    <img src="https://forthebadge.com/images/badges/powered-by-coffee.png" height="36"/>
+    <img src="https://raw.githubusercontent.com/abumalick/powered-by-vercel/master/powered-by-vercel.svg" height="36"/>
   </a>
 </p>
 
