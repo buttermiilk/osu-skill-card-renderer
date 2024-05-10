@@ -1,4 +1,4 @@
-<h1 align="center"><img src='https://cdn.discordapp.com/avatars/704992714109878312/36238cb1bb35c62b251691553f8380f3?size=128' height='100'><br>osu! skill card renderer</br></h1>
+<h1 align="center"><img src='https://i.imgur.com/hU7cF7r.png' height='100'><br>osu! skill card renderer</br></h1>
 <p align="center">basically some fun formula to render an osu! image.<br>inspired by <a href="https://github.com/Tienei/TinyBot">tienei's tinybot</a>.</br></p>
 <p align="center">
   <a href="https://forthebadge.com/">
