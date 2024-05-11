@@ -1,10 +1,8 @@
 <h1 align="center"><img src='https://i.imgur.com/hU7cF7r.png' height='100'><br>osu! skill card renderer</br></h1>
 <p align="center">basically some fun formula to render an osu! image.<br>inspired by <a href="https://github.com/Tienei/TinyBot">tienei's tinybot</a>.</br></p>
 <p align="center">
-  <a href="https://forthebadge.com/">
-    <img src="https://forthebadge.com/images/badges/0-percent-optimized.png" height="36"/>
-    <img src="https://raw.githubusercontent.com/abumalick/powered-by-vercel/master/powered-by-vercel.svg" height="36"/>
-  </a>
+  <img src="https://forthebadge.com/images/badges/0-percent-optimized.png" height="36"/>
+  <img src="https://raw.githubusercontent.com/abumalick/powered-by-vercel/master/powered-by-vercel.svg" height="36"/>
 </p>
 
 ---
