@@ -1,4 +1,18 @@
 module.exports = async ({ best, mode, user = "" }) => {
+  const properMode = function(mode) {
+    switch(mode) {
+      case 'osu': return 0;
+      case 'taiko': return 1;
+      case 'fruits': return 2;
+      case 'mania': return 3;
+      default: return 0;
+    };
+  };
+
+  mode = properMode(mode);
+
+  console.log(mode);
+
   const calculateNormalSkills = async (userId) => {
     const normalSkillsResponse = await fetch(
       `https://fun.yorunoken.com/api/user/skills?id=${userId}`

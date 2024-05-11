@@ -12,6 +12,14 @@ const drawCanvas = async (id, mode, client_id, client_secret, description, color
   const canvas = createCanvas(600, 1000);
   const ctx = canvas.getContext('2d');
 
+  const properMode = function(mode) {
+    if (!['0', '1', '2', '3'].includes(mode) && typeof mode == "string") return mode;
+    else if (mode < 0 || mode > 4) return "osu";
+    else return ['osu', 'taiko', 'fruits', 'mania'][mode];
+  };
+
+  mode = properMode(mode);
+
   let start, end;
   start = performance.now();
   const profile = await fetchData.fetchProfile(id, mode, client_id, client_secret);
@@ -83,17 +91,6 @@ const drawBackground = async (ctx, bgColor, color, image) => {
 
 const drawSkills = async (ctx, skills, mode, color) => {
   await new Promise((resolve) => {
-    const convertMode = (mode) => {
-      switch (mode) {
-        case "osu": return 0;
-        case "taiko": return 1;
-        case "fruits": return 2;
-        case "mania": return 3;
-        default: return 0
-      };
-    };
-
-    const modeIndex = convertMode(mode);
     const rgbValue = color?.split("(")[1].split(")")[0].split(",");
     const bright = color ? (Math.sqrt(
       0.299 * (rgbValue[0] * rgbValue[0]) +
@@ -137,16 +134,16 @@ const drawSkills = async (ctx, skills, mode, color) => {
 
       drawSkillCircle(125, acc_avg / 1000, acc_avg, "ACC");
       drawSkillCircle(300, speed_avg / 1000, speed_avg, "SPD");
-      if (modeIndex === 3) {
+      if (mode === 3) {
         drawSkillCircle(475, aim_avg / 1000, aim_avg, "AIM");
       } else {
         drawSkillCircle(475, 0, "-", "SKILL");
       }
     } else {
       const { aimAvg, speedAvg, accAvg } = skills;
-      drawSkillCircle(125, 1, aimAvg, "AIM");
-      drawSkillCircle(300, 1, speedAvg, "SPD");
-      drawSkillCircle(475, 1, accAvg, "ACC");
+      drawSkillCircle(125, 1, aimAvg.toString(), "AIM");
+      drawSkillCircle(300, 1, speedAvg.toString(), "SPD");
+      drawSkillCircle(475, 1, accAvg.toString(), "ACC");
     }
     resolve();
   });
@@ -316,30 +313,19 @@ const drawCustomizeBox = async (ctx, bgColor, color) => {
 };
 
 const calculateSkills = async (bestPlays, mode) => {
-  if (bestPlays.length < 50) return;
-  const convertMode = (mode) => {
-    switch (mode) {
-      case "osu": return 0;
-      case "taiko": return 1;
-      case "fruits": return 2;
-      case "mania": return 3;
-      default: return 0
-    };
-  };
-
-  const modeIndex = convertMode(mode);
-  const best = await bestData({ best: bestPlays, mode: modeIndex });
+  if (bestPlays.length < 50) return { aimAvg: 0, speedAvg: 0, accAvg: 0, modAvg: [{ mod: '' }], count: 50 };
+  const best = await bestData({ best: bestPlays, mode: mode });
   let aimAvg, speedAvg, accAvg, modAvg, count = 50;
 
   if (mode !== "osu") {
-    const normalSkills = await skillCalc({ best, mode: modeIndex });
+    const normalSkills = await skillCalc({ best, mode: mode });
     aimAvg = normalSkills.aimAvg;
     speedAvg = normalSkills.speedAvg;
     accAvg = normalSkills.accAvg;
     modAvg = normalSkills.modAvg;
   } else {
     const userId = bestPlays[0].user.id;
-    const normalSkills = await skillCalc({ best: bestPlays, mode: modeIndex, user: userId });
+    const normalSkills = await skillCalc({ best: bestPlays, mode: mode, user: userId });
     aimAvg = normalSkills.aimAvg;
     speedAvg = normalSkills.speedAvg;
     accAvg = normalSkills.accAvg;

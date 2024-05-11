@@ -1,10 +1,9 @@
 const express = require("express");
 const drawCanvas = require('./functions/drawCanvas');
-const { GlobalFonts } = require('@napi-rs/canvas');
 require('dotenv').config();
 
 const app = express();
-const port = 3000;
+const port = 8000;
 
 app.get('/', (_, res) => {
   res.send('Hi!');
@@ -22,7 +21,6 @@ app.get("/render", async (req, res) => {
   const client_secret = process.env.CLIENT_SECRET;
   const start = performance.now();
   try {
-    console.log(GlobalFonts.families);
     const buffer = await drawCanvas(id, mode, client_id, client_secret, description, color, bgColor, image);
     res.set('Content-Type', 'image/png');
     res.send(buffer);

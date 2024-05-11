@@ -16,7 +16,7 @@ const generatePlayerType = (mods) => {
   const priorityOrder = ["HT", "EZ", "NF", "FL", "DT", "NC", "HR", "HD", "FI", "PF", "SD"];
 
   for (const modifier of priorityOrder) {
-    if (mods.includes(modifier)) {
+    if (mods?.includes(modifier)) {
       const options = synonyms[modifier];
       const playerType = options[Math.floor(Math.random() * options.length)];
       return playerType.trim();
