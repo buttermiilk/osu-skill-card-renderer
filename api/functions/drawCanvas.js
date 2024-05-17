@@ -12,7 +12,7 @@ const drawCanvas = async (id, mode, client_id, client_secret, description, color
   const canvas = createCanvas(600, 1000);
   const ctx = canvas.getContext('2d');
 
-  const properMode = function(mode) {
+  const properMode = function (mode) {
     if (!['0', '1', '2', '3'].includes(mode) && typeof mode == "string") return mode;
     else if (mode < 0 || mode > 4) return "osu";
     else return ['osu', 'taiko', 'fruits', 'mania'][mode];
@@ -47,7 +47,7 @@ const drawCanvas = async (id, mode, client_id, client_secret, description, color
   await drawCustomizeBox(ctx, color);
   await drawProfile(ctx, profile, description, color);
   end = performance.now();
-  
+
   console.log('drawing took', ((end - start) / 1000).toFixed(3) + 's');
 
   return canvas.toBuffer('image/png');
@@ -169,7 +169,7 @@ const drawProfile = async (ctx, profile, description, color) => {
     ctx.stroke();
 
     ctx.font = 'bold 35px "IBM Plex Sans", sans-serif';
-    ctx.fillStyle =  bright ? 'black' : 'white';
+    ctx.fillStyle = bright ? 'black' : 'white';
     ctx.textAlign = 'center';
     ctx.fillText(profile.username, centerX, y + avatarRadius + 150);
 
@@ -178,7 +178,7 @@ const drawProfile = async (ctx, profile, description, color) => {
     ctx.textAlign = 'center';
     ctx.fillText(description || "oh that's funny", centerX, y + avatarRadius + 180);
 
-    ctx.beginPath(); 
+    ctx.beginPath();
     ctx.arc(centerX, y + avatarRadius, avatarRadius, 0, 2 * Math.PI);
     ctx.clip();
     ctx.closePath();
@@ -331,6 +331,12 @@ const calculateSkills = async (bestPlays, mode) => {
     accAvg = normalSkills.accAvg;
     modAvg = normalSkills.modAvg;
   }
+
+  if (modAvg.length) modAvg = modAvg.sort((a, b) => {
+    if (a.count < b.count) return 1
+    if (a.count > b.count) return -1
+    return 0;
+  });
 
   return { aimAvg, speedAvg, accAvg, modAvg, count };
 };

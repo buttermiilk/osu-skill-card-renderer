@@ -116,7 +116,8 @@ const Mods = Object.freeze({
   NF: "mod_no-fail",
   HT: "mod_half",
   FI: "mod_fader",
-  NM: "mod_no-mod"
+  NM: "mod_no-mod",
+  MR: "mod_mirror"
 });
 
 module.exports = { Score, Beatmap, Mods }
