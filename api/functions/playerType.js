@@ -23,7 +23,8 @@ const generatePlayerType = (mods) => {
     }
   }
 
-  return "Rhythm Rookie";
+  const NM = ["Vanilla Enjoyer", "Unmodified Gameplay", "Raw Taster"];
+  return NM[Math.floor(Math.random() *  NM.length)];
 };
 
 module.exports = generatePlayerType;
