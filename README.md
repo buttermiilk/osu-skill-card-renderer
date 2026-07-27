@@ -52,7 +52,7 @@ recommended because URLs are commonly retained in logs and browser history.
 
 Import the repository in Vercel and add `CLIENT_ID`, `CLIENT_SECRET`, and
 `RENDER_KEY` under Project Settings → Environment Variables. Vercel detects
-`api/index.js` as a Node.js Function; no custom build or output-directory
+`src/index.js` as an Express application; no custom build or output-directory
 setting is needed. The checked-in `vercel.json` keeps the fonts in the function
 bundle and allows up to 60 seconds for image rendering.
 
