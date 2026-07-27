@@ -6,7 +6,14 @@ const fetchData = require('./fetchData');
 const generatePlayerType = require('./playerType');
 
 const { join } = require('path');
-GlobalFonts.loadFontsFromDir(join(__dirname, "..", "font"));
+GlobalFonts.registerFromPath(
+  join(__dirname, '..', 'font', 'IBMPlexSans-Regular.ttf'),
+  'IBM Plex Sans'
+);
+GlobalFonts.registerFromPath(
+  join(__dirname, '..', 'font', 'IBMPlexSans-Bold.ttf'),
+  'IBM Plex Sans'
+);
 
 const drawCanvas = async (id, mode, client_id, client_secret, description, color, bgColor, imageUrl) => {
   const canvas = createCanvas(600, 1000);
