@@ -15,6 +15,20 @@ GlobalFonts.registerFromPath(
   'IBM Plex Sans'
 );
 
+const loadRemoteImage = async (url) => {
+  const response = await fetch(url, {
+    headers: { 'User-Agent': 'osu-skill-card/0.1' },
+    redirect: 'follow',
+    signal: AbortSignal.timeout(15_000),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Image request failed (${response.status}): ${url}`);
+  }
+
+  return loadImage(Buffer.from(await response.arrayBuffer()));
+};
+
 const drawCanvas = async (id, mode, client_id, client_secret, description, color, bgColor, imageUrl) => {
   const canvas = createCanvas(600, 1000);
   const ctx = canvas.getContext('2d');
@@ -43,7 +57,7 @@ const drawCanvas = async (id, mode, client_id, client_secret, description, color
 
   let image;
   if (imageUrl) {
-    image = await loadImage(imageUrl);
+    image = await loadRemoteImage(imageUrl);
   }
 
   start = performance.now();
@@ -157,85 +171,82 @@ const drawSkills = async (ctx, skills, mode, color) => {
 };
 
 const drawProfile = async (ctx, profile, description, color) => {
-  await new Promise(async (resolve) => {
-    const rgbValue = color?.split("(")[1].split(")")[0].split(",");
-    const bright = color ? (Math.sqrt(
-      0.299 * (rgbValue[0] * rgbValue[0]) +
-      0.587 * (rgbValue[1] * rgbValue[1]) +
-      0.114 * (rgbValue[2] * rgbValue[2])
-    )) >= 128 : false;
+  const rgbValue = color?.split("(")[1].split(")")[0].split(",");
+  const bright = color ? (Math.sqrt(
+    0.299 * (rgbValue[0] * rgbValue[0]) +
+    0.587 * (rgbValue[1] * rgbValue[1]) +
+    0.114 * (rgbValue[2] * rgbValue[2])
+  )) >= 128 : false;
 
-    const centerX = 300;
-    const y = 200;
-    const avatarRadius = 100;
+  const centerX = 300;
+  const y = 200;
+  const avatarRadius = 100;
 
-    ctx.beginPath();
-    ctx.arc(centerX, y + avatarRadius, avatarRadius + 2, 0, 2 * Math.PI);
-    ctx.strokeStyle = bright ? 'black' : 'white';
-    ctx.lineWidth = 8;
-    ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(centerX, y + avatarRadius, avatarRadius + 2, 0, 2 * Math.PI);
+  ctx.strokeStyle = bright ? 'black' : 'white';
+  ctx.lineWidth = 8;
+  ctx.stroke();
 
-    ctx.font = 'bold 35px "IBM Plex Sans", sans-serif';
-    ctx.fillStyle = bright ? 'black' : 'white';
-    ctx.textAlign = 'center';
-    ctx.fillText(profile.username, centerX, y + avatarRadius + 150);
+  ctx.font = 'bold 35px "IBM Plex Sans", sans-serif';
+  ctx.fillStyle = bright ? 'black' : 'white';
+  ctx.textAlign = 'center';
+  ctx.fillText(profile.username, centerX, y + avatarRadius + 150);
 
-    ctx.font = '25px "IBM Plex Sans", sans-serif';
-    ctx.fillStyle = bright ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.4)';
-    ctx.textAlign = 'center';
-    ctx.fillText(description || "oh that's funny", centerX, y + avatarRadius + 180);
+  ctx.font = '25px "IBM Plex Sans", sans-serif';
+  ctx.fillStyle = bright ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.4)';
+  ctx.textAlign = 'center';
+  ctx.fillText(description || "oh that's funny", centerX, y + avatarRadius + 180);
 
-    ctx.beginPath();
-    ctx.arc(centerX, y + avatarRadius, avatarRadius, 0, 2 * Math.PI);
-    ctx.clip();
-    ctx.closePath();
+  ctx.beginPath();
+  ctx.arc(centerX, y + avatarRadius, avatarRadius, 0, 2 * Math.PI);
+  ctx.clip();
+  ctx.closePath();
 
-    const avatar = await loadImage(`${profile.avatar_url}`);
-    ctx.drawImage(
-      avatar,
-      centerX - avatarRadius,
-      y,
-      avatarRadius * 2,
-      avatarRadius * 2
-    );
-    resolve();
-  });
+  const avatar = await loadRemoteImage(profile.avatar_url);
+  ctx.drawImage(
+    avatar,
+    centerX - avatarRadius,
+    y,
+    avatarRadius * 2,
+    avatarRadius * 2
+  );
 };
 
 const drawMods = async (ctx, modAvg, color) => {
-  await new Promise(async (resolve) => {
-    const modIconDir = "https://raw.githubusercontent.com/ppy/osu-web/master/public/images/badges/mods";
+  const modIconDir = "https://raw.githubusercontent.com/ppy/osu-web/master/public/images/badges/mods";
 
-    const rgbValue = color?.split("(")[1].split(")")[0].split(",");
-    const bright = color ? (Math.sqrt(
-      0.299 * (rgbValue[0] * rgbValue[0]) +
-      0.587 * (rgbValue[1] * rgbValue[1]) +
-      0.114 * (rgbValue[2] * rgbValue[2])
-    )) >= 128 : false;
+  const rgbValue = color?.split("(")[1].split(")")[0].split(",");
+  const bright = color ? (Math.sqrt(
+    0.299 * (rgbValue[0] * rgbValue[0]) +
+    0.587 * (rgbValue[1] * rgbValue[1]) +
+    0.114 * (rgbValue[2] * rgbValue[2])
+  )) >= 128 : false;
 
-    ctx.beginPath();
-    ctx.moveTo(300, 525);
-    ctx.lineTo(300, 725);
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    ctx.closePath();
+  ctx.beginPath();
+  ctx.moveTo(300, 525);
+  ctx.lineTo(300, 725);
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.closePath();
 
-    const fillSkillValue = (y, text) => {
-      ctx.font = 'bold 25px "IBM Plex Sans", sans-serif';
-      ctx.fillStyle = bright ? 'black' : 'white';
-      ctx.textAlign = 'left';
-      ctx.fillText(text, 325, y);
-    };
+  const fillSkillValue = (y, text) => {
+    ctx.font = 'bold 25px "IBM Plex Sans", sans-serif';
+    ctx.fillStyle = bright ? 'black' : 'white';
+    ctx.textAlign = 'left';
+    ctx.fillText(text, 325, y);
+  };
 
-    fillSkillValue(693, generatePlayerType(modAvg[0].mod.match(/.{1,2}/g)));
+  fillSkillValue(693, generatePlayerType(modAvg[0].mod.match(/.{1,2}/g)));
 
-    const splittedMods = modAvg[0].mod.match(/.{1,2}/g) || ['NM'];
-    for (let i = 0; i < splittedMods.length; i++) {
-      const image = await loadImage(`${modIconDir}/${Mods[splittedMods[i]]}.png`);
-      ctx.drawImage(image, 325 + (50 * i), 625, 45, 32);
-    };
-    resolve();
-  });
+  const splittedMods = modAvg[0].mod.match(/.{1,2}/g) || ['NM'];
+  for (let i = 0; i < splittedMods.length; i++) {
+    const asset = Mods[splittedMods[i]];
+    if (!asset) continue;
+
+    const image = await loadRemoteImage(`${modIconDir}/${asset}.svg`);
+    ctx.drawImage(image, 325 + (50 * i), 625, 45, 32);
+  }
 };
 
 const drawStats = async (ctx, profile, color) => {

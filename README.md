@@ -52,9 +52,11 @@ recommended because URLs are commonly retained in logs and browser history.
 
 Import the repository in Vercel and add `CLIENT_ID`, `CLIENT_SECRET`, and
 `RENDER_KEY` under Project Settings → Environment Variables. Vercel detects
-`src/index.js` as an Express application; no `vercel.json`, custom build, or
-output-directory setting is needed. Express applications use Fluid Compute by
-default, and Vercel bundles files referenced by the application.
+`src/index.js` as an Express application; no custom build or output-directory
+setting is needed. The checked-in `vercel.json` explicitly selects Vercel's
+Express preset so settings retained from older deployments cannot force the
+project into the generic static-site preset. Express applications use Fluid
+Compute by default, and Vercel bundles files referenced by the application.
 
 ---
 ## Previews

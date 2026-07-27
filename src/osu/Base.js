@@ -105,19 +105,19 @@ class Beatmap {
 }
 
 const Mods = Object.freeze({
-  HD: "mod_hidden",
-  HR: "mod_hard-rock",
-  SD: "mod_sudden-death",
-  PF: "mod_perfect",
-  DT: "mod_double-time",
-  NC: "mod_nightcore",
-  FL: "mod_flashlight",
-  EZ: "mod_easy",
-  NF: "mod_no-fail",
-  HT: "mod_half",
-  FI: "mod_fader",
-  NM: "mod_no-mod",
-  MR: "mod_mirror"
+  HD: "mod-hidden",
+  HR: "mod-hard-rock",
+  SD: "mod-sudden-death",
+  PF: "mod-perfect",
+  DT: "mod-double-time",
+  NC: "mod-nightcore",
+  FL: "mod-flashlight",
+  EZ: "mod-easy",
+  NF: "mod-no-fail",
+  HT: "mod-half-time",
+  FI: "mod-fade-in",
+  NM: "mod-no-mod",
+  MR: "mod-mirror"
 });
 
 module.exports = { Score, Beatmap, Mods }
