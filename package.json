@@ -9,7 +9,7 @@
     "run": "node api/index"
   },
   "engines": {
-    "node": "18.x"
+    "node": "24.x"
   },
   "keywords": [
     "osu",
