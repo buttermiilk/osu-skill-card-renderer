@@ -26,6 +26,36 @@ I don't expect the code to be readable or clean. I put no comments here, like at
 
 License, [MIT license](/LICENSE), read that file. I don't have any other requirements, this is a learning project pushed to production. Make sure to put in secret keys, logics stay in files.
 
+## Development
+
+This project requires Node.js 24 and npm 11.
+
+```sh
+cp .env.example .env
+npm install
+npm run dev
+```
+
+Set `CLIENT_ID` and `CLIENT_SECRET` to osu! OAuth application credentials and
+choose a private `RENDER_KEY`. Render a card with:
+
+```sh
+curl -H "x-render-key: your-key" \
+  "http://localhost:8000/render?id=2&mode=osu" \
+  --output card.png
+```
+
+The legacy `key` query parameter remains supported, but the request header is
+recommended because URLs are commonly retained in logs and browser history.
+
+## Deploying to Vercel
+
+Import the repository in Vercel and add `CLIENT_ID`, `CLIENT_SECRET`, and
+`RENDER_KEY` under Project Settings → Environment Variables. Vercel detects
+`api/index.js` as a Node.js Function; no custom build or output-directory
+setting is needed. The checked-in `vercel.json` keeps the fonts in the function
+bundle and allows up to 60 seconds for image rendering.
+
 ---
 ## Previews
 
